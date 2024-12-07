@@ -1,5 +1,6 @@
 package data.ecommerce.impl.service;
 
+import data.general.model.BaseResponse;
 import data.general.util.ResponseUtil;
 import data.ecommerce.api.model.PaginationRequest;
 import data.ecommerce.api.model.UserData;
@@ -33,7 +34,9 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Override
     @PostMapping("/insert")
-    public Object saveUser(@Valid @RequestBody UserData userData) {
+    public BaseResponse saveUser( @Valid @RequestBody UserData userData) {
+        System.out.println("ROLE DATA: " + userData.getRole());
+
         if (userData == null || userData.getName() == null || userData.getPassword() == null || userData.getEmail() == null){
             Map<String, String> errors = Map.of(
                     "name", "Name cannot be null",
@@ -60,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PostMapping("/get-all")
-    public Object getAllUser(@RequestBody PaginationRequest request) {
+    public BaseResponse getAllUser(@RequestBody PaginationRequest request) {
         List<UserData> allUser = userAccessor.getAllUserData();
         int size = request.getSize();
         int page = request.getPage();
@@ -80,7 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @GetMapping("/get-user/{id}")
-    public Object getById(@PathVariable String id) {
+    public BaseResponse getById(@PathVariable String id) {
         UserData user = userAccessor.getUserData(id);
         if (user == null) {
             return ResponseUtil.generateErrorResponse(
@@ -94,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @DeleteMapping("/delete/{id}")
-    public Object deleteUser(@PathVariable String id) {
+    public BaseResponse deleteUser(@PathVariable String id) {
         UserData user = userAccessor.getUserData(id);
         if (user == null) {
             return ResponseUtil.generateErrorResponse(
@@ -108,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @DeleteMapping("/delete-by-email/{email}")
-    public Object deleteUserByEmail(@PathVariable String email) {
+    public BaseResponse deleteUserByEmail(@PathVariable String email) {
         UserData user = userAccessor.getByFilter("email", email);
         if (user == null) {
             return ResponseUtil.generateErrorResponse(
@@ -123,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PutMapping("/update/{id}")
-    public Object updateUser(@PathVariable String id, @RequestBody UserData userData) {
+    public BaseResponse updateUser(@PathVariable String id, @RequestBody UserData userData) {
         UserData existingUser = userAccessor.getUserData(id);
         if (existingUser == null) {
             return ResponseUtil.generateErrorResponse(
@@ -132,7 +135,6 @@ public class UserServiceImpl implements UserService {
             );
         }
 
-        // Update fields
         existingUser.setName(userData.getName() != null ? userData.getName() : existingUser.getName());
         existingUser.setEmail(userData.getEmail() != null ? userData.getEmail() : existingUser.getEmail());
         existingUser.setRole(userData.getRole() != null ? userData.getRole() : existingUser.getRole());
@@ -149,7 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @GetMapping("/get-user-by-email/{email}")
-    public Object getUserByEmail(@PathVariable  String email) {
+    public BaseResponse getUserByEmail(@PathVariable  String email) {
         UserData user = userAccessor.getByFilter("email", email);
         if (user == null) {
             return ResponseUtil.generateErrorResponse(
