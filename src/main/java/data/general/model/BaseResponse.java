@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BaseResponse<T> {
+public class BaseResponse {
     private boolean success;
     private int code;
     private HttpStatus status;

@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ErrorResponse<T> {
-    private boolean success;
-    private int code;
-    private HttpStatus status;
+//@Builder
+public class ErrorResponse<T> extends  BaseResponse{
+//    private boolean success;
+//    private int code;
+//    private HttpStatus status;
     private T errors;
 }
