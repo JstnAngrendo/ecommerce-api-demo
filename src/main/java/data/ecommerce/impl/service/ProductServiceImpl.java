@@ -73,8 +73,6 @@ public class ProductServiceImpl implements ProductService {
         return userAccessor.getUserData(userId);
     }
 
-
-
     @Override
     @GetMapping("/get-all")
     public BaseResponse getAllProducts() {
